@@ -298,7 +298,7 @@ public class JdbcSourceTaskExt extends SourceTask {
         if (autoStop && mode.equals(JdbcSourceTaskConfigExt.MODE_BULK)
                 && querier.getLastUpdate() > 0) {
           closeResources();
-          throw new KillMeException("Task finished loading data");
+          throw new ForceShutdownException("Task finished loading data");
         }
         // If not in the middle of an update, wait for next update time
         final long nextUpdate = querier.getLastUpdate()
@@ -416,8 +416,8 @@ public class JdbcSourceTaskExt extends SourceTask {
     }
   }
 
-  class KillMeException extends RuntimeException {
-    public KillMeException(String msg) {
+  class ForceShutdownException extends RuntimeException {
+    public ForceShutdownException(String msg) {
       super(msg);
     }
   }
